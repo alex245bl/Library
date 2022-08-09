@@ -1,0 +1,119 @@
+.autorizationbody
+{
+    background-image:url(../html/img/bgauto.jpg);
+    background-size: 100%;
+}
+.autorpanel
+{
+    padding: 10px 30px 10px;
+    margin:10% 36% 20%;
+    background: linear-gradient(to bottom right,whitesmoke,antiquewhite);
+    border: 5px solid lightgray;
+}
+.indexbody
+{
+    background:url("../html/img/wood.jpg")
+}
+.indexbody>header
+{
+    background:url("../html/img/shelf.jpg");
+    background-position-y:245px;
+    height: 140px;
+}
+.maindiv
+{
+    margin: 0px 10%;
+    height: 100%;
+    background: rgba(189,195,199,0.5);
+    height: auto;
+}
+#logo
+{
+    width:27%;
+}
+.searchdiv
+{
+    display:flex;
+}
+.book
+{
+    display: flex;
+    background: linear-gradient(to bottom right,whitesmoke,antiquewhite);
+    border-radius: 10px;
+    margin-bottom:10px;
+}
+.book>.image
+{
+    width: 100px;
+}
+#img
+{
+    width:100%;
+}
+.col-6
+{
+
+}
+#autoricon
+{
+    margin: 20px 50px 50px 20px;
+    height: 80px;
+    margin-left: 300px;
+    margin-top:30px;
+}
+
+a
+{
+    text-decoration: none;
+}
+.last
+{
+    display:flex;
+    align-items: center;
+    align-content: center;
+}
+
+.error
+{
+    font-style: italic;
+    color:red;
+}
+.buttons
+{
+    display:flex;
+    margin-top: 30px;
+    margin-left: 300px;
+}
+.iconcls
+{
+    max-height: 55px;
+}
+.autorbutton
+{
+    background: linear-gradient(to bottom right,whitesmoke,antiquewhite);
+    border-radius: 10px;
+}
+.enterbutton
+{
+    background: linear-gradient(to bottom right,whitesmoke,antiquewhite);
+    border-radius: 10px;
+    margin-top: 30px;
+    margin-left: 300px;
+}
+.exitbutton
+{
+    background: linear-gradient(to bottom right,whitesmoke,antiquewhite);
+    border-radius: 10px;
+}
+.panel
+{
+    background: linear-gradient(to bottom right,whitesmoke,antiquewhite);
+    border-radius: 10px;
+    padding: 5px;
+}
+.dropdown
+{
+
+}
+
+
