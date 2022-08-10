@@ -17,8 +17,10 @@
                 list ($nickname,$mail,$password) =$arr;
                 if (str_contains($password,md5($_POST['password'])))
                 {
-                    echo "<script>alert(\"Добро пожаловать,$nickname\");</script>";
                     setcookie("nick",$nickname);
+                    header("Location: ".$_SERVER['PHP_SELF']);
+                    echo "<script>alert(\"Добро,$nickname\");</script>";
+
                     break;
                 }
                 else
@@ -29,7 +31,6 @@
             }
             elseif(feof($f))
             {
-                echo "<script>alert(\"FE\");</script>";
                 fclose($f);
                 header("Location: autorindex.php?msg=wronglogin");
                 exit;
@@ -45,7 +46,9 @@
     }
     if(isset($_POST['exit']))
     {
+        echo "<script>alert(\"Добро пожаловать,$nickname\");</script>";
         setcookie("nick",'',time()-3600);
+        header("Location: ".$_SERVER['PHP_SELF']);
     }
     ?>
 </head>
@@ -67,7 +70,7 @@
         </div>
         <div class="col">
             <?php
-            if(!isset($_POST['autorsubmit']))
+            if(!isset($_COOKIE['nick']))
             {
                 echo '<button type="button" class="enterbutton" >
                 <a href="autorindex.php"> Войти <img src="img/autor.svg"> </a>
@@ -78,8 +81,8 @@
                 echo '<div class="buttons"><button type="button" style="margin-right: 40px" class="autorbutton" data-bs-toggle="modal" data-bs-target="#exampleModal">
                  Добавить <img class="iconcls" src="img/addbook.svg">
             </button>';
-                echo '<form method="POST"><button type="button" name="exit" class="exitbutton">
-                <a href="index.php"> Выйти <img class="iconcls" src="img/autor.svg"></a>
+                echo '<form action="index.php" method="POST"><button type="submit" name="exit" class="exitbutton">
+                 Выйти <img class="iconcls" src="img/autor.svg">
             </button></form></div>';
 
             }
@@ -115,14 +118,14 @@
 </header>
 <div class="maindiv">
     <div class="caption">
-        <?php if(isset($_POST['autorsubmit']))
+        <?php if(isset($_COOKIE['nick']))
         { echo'<h1>Ваши книги, '.$_COOKIE['nick'].' </h1>'; } ?>
     </div>
     <div class="container">
         <div class="row">
             <div class="col-md-8">
                     <?php
-                    if(isset($_POST['autorsubmit'])) {
+                    if(isset($_COOKIE['nick'])) {
                         $booksfile = fopen("../db/" . $_COOKIE['nick'] . ".txt", "rt") or die("Ошибка,файл базы данных не найден!");
                         while (!feof($booksfile)) {
                             $data = fgets($booksfile);
