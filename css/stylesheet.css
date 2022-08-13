@@ -12,11 +12,11 @@
 }
 .indexbody
 {
-    background:url("../html/img/wood.jpg")
+    background:url("../php/img/wood.jpg")
 }
 .indexbody>header
 {
-    background:url("../html/img/shelf.jpg");
+    background:url("../php/img/shelf.jpg");
     background-position-y:245px;
     height: 140px;
 }

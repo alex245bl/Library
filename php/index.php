@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="../css/stylesheet.css" rel="stylesheet">
@@ -61,9 +61,9 @@
         <div class="col"style="padding-top: 75px">
             <div class="searchdiv">
                 <div class="container-fluid">
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Поиск книги" aria-label="Search">
-                        <button class="btn btn-primary btn-sm" type="submit">Поиск</button>
+                    <form class="d-flex" action="index.php" method="POST">
+                        <input class="form-control me-2" type="search" name="searchstr" placeholder="Поиск книги" aria-label="Search" pattern=^[a-zA-Z0-9]">
+                        <button type="submit" class="btn btn-primary btn-sm" name="searchbut">Поиск</button>
                     </form>
                 </div>
             </div>
@@ -98,11 +98,11 @@
                             <form action="index.php" method="POST">
                             <div class="mb-3">
                                 <label  class="form-label">Год выпуска</label>
-                                <input type="text" name="year" class="form-control" style="width:100px">
+                                <input type="text" name="year" class="form-control" style="width:100px" pattern="[0-9]{,4}">
                             </div>
                             <div class="mb-3">
                                 <label  class="form-label">Название книги</label>
-                                <input type="text" name="title" class="form-control" style="width:250px">
+                                <input type="text" name="title" class="form-control" style="width:250px" pattern=^[a-zA-Z0-9]">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -125,40 +125,90 @@
         <div class="row">
             <div class="col-md-8">
                     <?php
-                    if(isset($_COOKIE['nick'])) {
+                    if(isset($_COOKIE['nick']))
+                    {
                         $booksfile = fopen("../db/" . $_COOKIE['nick'] . ".txt", "rt") or die("Ошибка,файл базы данных не найден!");
-                        while (!feof($booksfile)) {
+                        $booklist=[];
+                        while (!feof($booksfile))
+                        {
                             $data = fgets($booksfile);
-                            if ($data != "") {
+                            if ($data != "")
+                            {
                                 $bookarr = explode("/", $data, 2);
-                                list ($booktitle, $bookyear) = $bookarr;
-                                echo ' 
-                        <div class="book">
-                             <div class="image">
-                                  <img src="img/test.png" id="img">
-                             </div>
-                             <div class="info">
-                                  <div class="title">
-                                       <b>' . $booktitle . '</b>
-                                  </div>
-                                  <div class="year">
-                                       Год выпуска: <i>' . $bookyear . ' г.</i>
-                                  </div>
-                             </div>
-                        </div>';
+                                list ($listtitle, $listyear) = $bookarr;
+                                $booklist["$listtitle"]=$listyear;
+                                if (@$_GET['sort']=="yearsort")
+                                {
+                                    arsort($booklist);
+                                }
+                                if (@$_GET['sort']=="titlesort")
+                                {
+                                    ksort($booklist);
+                                }
+                                if(isset($_POST['searchbut']))
+                                {
+                                    if(is_string($_POST['searchstr']))
+                                    {
+                                        if(array_key_exists($_POST['searchstr'],$booklist))
+                                        {
+                                            $arr[$_POST['searchstr']]=$booklist[$_POST['searchstr']];
+                                            $booklist=array();
+                                            $booklist=$arr;
+                                            echo "<script>alert(\"Добро пожаловать,);</script>";
+                                        }
+                                    }
+                                    if(is_numeric($_POST['searchstr']))
+                                    {
+                                        if(array_search($_POST['searchstr'],$booklist))
+                                        {
+                                            $adm=array_search($_POST['searchstr'],$booklist);
+                                            $typ1="Над пропастью во ржи";
+                                            $typ2="1965";
+                                            $arr[$adm]=$_POST['searchstr'];
+                                            $booklist=array();
+                                            $booklist=$arr;
+
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }?>
+                        foreach ($booklist as $booktitle =>$bookyear)
+                        {
+                            $iconid=rand(1,4);
+                            echo ' 
+                            <div class="book">
+                                 <div class="image">
+                                   <img src="img/'.$iconid.'bookicon.svg" id="img">
+                                 </div>
+                                 <div class="info">
+                                      <div class="title">
+                                           <b>' . $booktitle . '</b>
+                                      </div>
+                                      <div class="year">
+                                          Год выпуска: <i>' . $bookyear . ' г.</i>
+                                      </div>
+                                 </div>
+                             </div>';
+                        }
+                    }
+                    ?>
+
             </div>
             <div class="col-6 col-md-4">
                 <div class="panel">
                     <div class="dropdown">
+                        <form method="GET" action="index.php">
                         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="btnradio1" style="border: 0px">сортировка по имени</label>
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="btnradio2" style="border: 0px">сортировка по году выпуску</label>
+                            <input type="submit" class="btn-check" name="sort" value="nosort" id="btnradio1" autocomplete="off" >
+                            <label class="btn btn-outline-primary" for="btnradio1" style="border: 0px" >без сортировки</label>
+                            <input type="submit" class="btn-check" name="sort" value="yearsort" id="btnradio2" autocomplete="off" >
+                            <label class="btn btn-outline-primary" for="btnradio2" style="border: 0px" >сортировка по году выпуску</label>
+                            <input type="submit" class="btn-check" name="sort" value="titlesort" id="btnradio3" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio3" style="border: 0px">сортировка по имени</label>
                         </div>
+                        </form>
+
                     </div>
                 </div>
             </div>
