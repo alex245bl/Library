@@ -1,6 +1,6 @@
 .autorizationbody
 {
-    background-image:url(../html/img/bgauto.jpg);
+    background-image:url(../php/img/bgauto.jpg);
     background-size: 100%;
 }
 .autorpanel
@@ -50,10 +50,7 @@
 {
     width:100%;
 }
-.col-6
-{
 
-}
 #autoricon
 {
     margin: 20px 50px 50px 20px;
@@ -110,10 +107,7 @@ a
     background: linear-gradient(to bottom right,whitesmoke,antiquewhite);
     border-radius: 10px;
     padding: 5px;
-}
-.dropdown
-{
-
+    margin-bottom: 5px;
 }
 
 
